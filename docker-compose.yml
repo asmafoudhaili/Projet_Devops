@@ -1,0 +1,31 @@
+version: "3"
+services:
+  mysqldb:
+    container_name: mysqldb
+    image: mysql/mysql-server:8.0
+    restart: unless-stopped
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_DATABASE=achatdb
+    volumes:
+      - db:/var/lib/mysql
+
+  app-timesheet:
+    image: mekni99/achat:1.0.0
+    container_name: achat
+    restart: on-failure
+    environment:
+       SPRING_APPLICATION_JSON: '{
+           "spring.datasource.url": "jdbc:mysql://mysqldb:3306/achatdb?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC",
+           "spring.datasource.username": "root",
+           "spring.datasource.password": null,
+           "spring.jpa.show-sql": true,
+           "spring.jpa.hibernate.ddl-auto": "update",
+           "spring.jpa.properties.hibernate.dialect": "org.hibernate.dialect.MySQL5InnoDBDialect"
+        }'
+    stdin_open: true
+    tty: true
+
+
