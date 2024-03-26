@@ -1,7 +1,7 @@
 version: "3"
 services:
   mysqldb:
-    container_name: achat
+    container_name: achatdb
     image: mysql/mysql-server:8.0
     restart: unless-stopped
     ports:
